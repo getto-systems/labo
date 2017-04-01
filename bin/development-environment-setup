@@ -1,0 +1,163 @@
+#!/bin/bash
+
+development_environment_setup_main(){
+  local root
+  local root_confirm
+
+  root=$HOME
+  if [ "$root" != "$(pwd)" ]; then
+    echo home: $HOME
+    read -p "OK? [Y/n] " root_confirm
+    case "$root_confirm" in
+      Y*|y*)
+      ;;
+      *)
+        exit
+      ;;
+    esac
+  fi
+
+  development_environment_setup_shared
+  development_environment_setup_plugins
+  development_environment_setup_vim
+  development_environment_setup_direnv
+  development_environment_setup_peco
+  development_environment_setup_zsh
+}
+
+development_environment_setup_plugins(){
+  local dir
+  local repo
+
+  dir=$root/plugins
+  mkdir -p $dir
+
+  local -a repos=(
+    git://github.com/shun-fix9/mybashrc
+    git://github.com/shun-fix9/birdfirm
+    git://github.com/shun-fix9/tmux-wrapper
+    git://github.com/sanzen-sekai/mypassword
+    git://github.com/sanzen-sekai/version-functions
+    git://github.com/sanzen-sekai/dockerfile-build-functions
+    git://github.com/sanzen-sekai/git-readme
+    git://github.com/sanzen-sekai/git-pub
+    git://github.com/sanzen-sekai/git-sub-status
+    git://github.com/sanzen-sekai/git-post
+    git://github.com/sanzen-sekai/git-branch-and-post
+  )
+  for repo in ${repos[@]}; do
+    development_environment_setup_git_sync
+  done
+}
+development_environment_setup_direnv(){
+  local direnv_version
+  direnv_version=2.9.0
+  echo install direnv v$direnv_version
+
+  mkdir -p $dir/direnv/bin
+
+  if [ ! -d $dir/direnv/$direnv_version ]; then
+    mkdir -p $dir/direnv/$direnv_version
+    cd $dir/direnv/$direnv_version
+    curl -sSL https://github.com/direnv/direnv/releases/download/v$direnv_version/direnv.linux-amd64 > direnv
+    chmod a+x direnv
+    cd $dir/direnv/bin
+    rm -f direnv
+    ln -s ../$direnv_version/direnv
+  fi
+}
+development_environment_setup_peco(){
+  local peco_version
+  peco_version=0.4.2
+  echo install peco v$peco_version
+
+  mkdir -p $dir/peco/bin
+
+  if [ ! -d $dir/peco/$peco_version ]; then
+    mkdir -p $dir/peco/$peco_version
+    cd $dir/peco/$peco_version
+    curl -sSL https://github.com/peco/peco/releases/download/v$peco_version/peco_linux_amd64.tar.gz > peco_linux_amd64.tar.gz
+    tar xvzf peco_linux_amd64.tar.gz
+    cd $dir/peco/bin
+    rm -f peco
+    ln -s ../$peco_version/peco_linux_amd64/peco
+  fi
+}
+development_environment_setup_zsh(){
+  cd $root
+  TERM=xterm curl -sSL zplug.sh/installer | zsh
+  ln -s .config/zsh/zshrc .zshrc
+}
+development_environment_setup_vim(){
+  local dir
+  local repo
+  local file
+
+  dir=$root/.config/nvim/repos/github.com/Shougo
+  mkdir -p $dir
+
+  local -a repos=(
+    git://github.com/Shougo/dein.vim
+  )
+  for repo in ${repos[@]}; do
+    development_environment_setup_git_sync
+  done
+}
+development_environment_setup_shared(){
+  if [ -d $root/.shared ]; then
+    cd $root
+    local path
+    local -a paths=(
+      .aws
+      .config
+      .docker
+      .docker_build
+      .gem
+      .gsutil
+      .git-post
+      .kube
+      .local
+      .ssh
+      .terminfo
+      .zsh
+    )
+    for path in ${paths[@]}; do
+      echo "ln -s .shared/$path"
+      mkdir -p .shared/$path
+      rm -rf $path
+      ln -s .shared/$path
+    done
+  fi
+}
+
+development_environment_setup_git_sync(){
+  local name
+  if [ -n "$1" ]; then
+    name=$1
+  else
+    name=$(basename $repo)
+  fi
+
+  echo "$repo => $dir/$name"
+
+  cd $dir
+  if [ $name = "." ]; then
+    if [ -d .git ]; then
+      git pull
+    else
+      git clone $repo tmp_git_repo
+      mv tmp_git_repo/.git .
+      rm -rf tmp_git_repo
+      git checkout .
+    fi
+  else
+    if [ -d $name ]; then
+      cd $name
+      git pull
+    else
+      git clone $repo $name
+    fi
+  fi
+}
+
+development_environment_setup_main
