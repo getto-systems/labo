@@ -6,19 +6,6 @@ EXPOSE 22
 ENV LSB_RELEASE yakkety
 ENV LANG ja_JP.UTF-8
 
-# setup home
-RUN : \
- && useradd shun \
- && usermod -aG sudo -s /bin/zsh shun \
- && echo '%sudo	ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-nopasswd \
- && mkdir -p /home/shun/.ssh \
- && mkdir -p /home/shun/bin \
- && touch /home/shun/.ssh/authorized_keys \
- && chown shun:shun -R /home/shun \
- && chmod 700 /home/shun/.ssh \
- && chmod 600 /home/shun/.ssh/authorized_keys \
- && :
-
 # basic packages
 RUN : \
  && set -x \
@@ -40,6 +27,19 @@ RUN : \
 
 # setup localtime
 RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+
+# setup home
+RUN : \
+ && useradd shun \
+ && usermod -aG sudo -s /bin/zsh shun \
+ && echo '%sudo	ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-nopasswd \
+ && mkdir -p /home/shun/.ssh \
+ && mkdir -p /home/shun/bin \
+ && touch /home/shun/.ssh/authorized_keys \
+ && chown shun:shun -R /home/shun \
+ && chmod 700 /home/shun/.ssh \
+ && chmod 600 /home/shun/.ssh/authorized_keys \
+ && :
 
 # docker
 RUN : \
