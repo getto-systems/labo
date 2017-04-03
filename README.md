@@ -19,7 +19,7 @@ docker run -d --name getto-labo -h getto-labo -p $PORT:22 -v shared:/home/shun/.
 ### init container
 
 ```
-docker exec -u shun:shun getto-labo /home/shun/labo-setup
+docker exec -u shun:shun getto-labo /home/shun/bin/labo-setup
 ```
 
 ### setup shared

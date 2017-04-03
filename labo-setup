@@ -131,7 +131,11 @@ labo_setup_shared(){
     for path in ${paths[@]}; do
       if [ ! -L $path ]; then
         if [ -e $path ]; then
-          mv $path .shared/$path
+          if [ -d $.shared/$path ]; then
+            mv $path/* .shared/$path/*
+          else
+            mv $path .shared/$path
+          fi
         else
           mkdir -p .shared/$path
         fi
