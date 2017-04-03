@@ -5,7 +5,7 @@ labo_setup_main(){
   local plugin_root
 
   root=/home/shun
-  plugin_root=$root/plugins
+  plugin_root=$root/.plugins
 
   labo_setup_shared
   labo_setup_plugins
