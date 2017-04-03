@@ -6,15 +6,15 @@ laboratory docker image for developper
 # build image
 
 ```
-docker build -t getto/labo.shun:0.0.1 .
+docker build -t getto/labo.shun .
 ```
 
 
 # run image
 
 ```
-docker volume create --name shared
-docker run -d --name getto-labo-shun -p $PORT:22 -v shared:/home/shun/.shared getto/labo.shun:0.0.1
+docker volume create --name shared # if not exists
+docker run -d --name getto-labo-shun -h getto-labo-shun -p $PORT:22 -v shared:/home/shun/.shared getto/labo.shun
 ```
 
 
