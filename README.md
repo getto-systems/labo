@@ -25,7 +25,7 @@ docker run -it -v shared:/home/shun/.shared getto/labo.shun bash
 $ sudo chown shun:shun .shared
 ```
 
-### setup shared/.config
+#### shared/.config
 
 ```
 git clone https://github.com/shun-getto-systems/configfiles.git .shared/.config
