@@ -20,6 +20,7 @@ RUN : \
       manpages-dev \
       ssh \
       sudo \
+      tmux \
       unzip \
       zsh \
  && apt-get clean \
