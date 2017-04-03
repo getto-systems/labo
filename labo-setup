@@ -83,7 +83,7 @@ labo_setup_peco(){
 labo_setup_zsh(){
   cd $root
   if [ ! -d .zplug ]; then
-    TERM=xterm curl -sSL zplug.sh/installer | zsh
+    curl -sSL zplug.sh/installer | TERM=xterm zsh
   fi
   if [ ! -L .zshrc ]; then
     ln -s .config/zsh/zshrc .zshrc
