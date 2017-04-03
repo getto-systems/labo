@@ -30,6 +30,11 @@ docker run -it -v shared:/home/shun/.shared getto/labo.shun bash
 $ sudo chown shun:shun .shared
 ```
 
+### setup shared/.config
+
+```
+git clone https://github.com/shun-fix9/configfiles.git .shared/.config
+```
 
 ## user-data.yml
 
