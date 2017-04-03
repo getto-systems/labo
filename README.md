@@ -10,11 +10,18 @@ docker build -t getto/labo.shun .
 ```
 
 
-# run image
+# run container
 
 ```
-docker volume create --name shared # if not exists
-docker run -d --name getto-labo-shun -h getto-labo-shun -p $PORT:22 -v shared:/home/shun/.shared getto/labo.shun
+docker run -d --name getto-labo -h getto-labo -p $PORT:22 -v shared:/home/shun/.shared getto/labo.shun
+```
+
+## setup shared
+
+```
+docker volume create --name shared
+docker run -it -v shared:/home/shun/.shared getto/labo.shun bash
+$ sudo chown shun:shun .shared
 ```
 
 
