@@ -16,6 +16,41 @@ labo_setup_main(){
   labo_setup_zsh
 }
 
+labo_setup_shared(){
+  if [ -d $root/.shared ]; then
+    cd $root
+    local path
+    local -a paths=(
+      .aws
+      .config
+      .docker
+      .docker_build
+      .gem
+      .gsutil
+      .git-post
+      .kube
+      .local
+      .ssh
+      .terminfo
+      .zsh
+    )
+    for path in ${paths[@]}; do
+      if [ ! -L $path ]; then
+        if [ -e $path ]; then
+          if [ -d $.shared/$path ]; then
+            mv $path/* .shared/$path/*
+          else
+            mv $path .shared/$path
+          fi
+        else
+          mkdir -p .shared/$path
+        fi
+        echo "ln -s .shared/$path"
+        ln -s .shared/$path
+      fi
+    done
+  fi
+}
 labo_setup_plugins(){
   local dir
   local repo
@@ -35,6 +70,7 @@ labo_setup_plugins(){
     git://github.com/sanzen-sekai/git-sub-status
     git://github.com/sanzen-sekai/git-post
     git://github.com/sanzen-sekai/git-branch-and-post
+    git://github.com/Shougo/dein.vim
   )
   for repo in ${repos[@]}; do
     labo_setup_git_sync
@@ -74,7 +110,7 @@ labo_setup_peco(){
     mkdir -p $dir/$peco_version
     cd $dir/$peco_version
     curl -sSL https://github.com/peco/peco/releases/download/v$peco_version/peco_linux_amd64.tar.gz > peco_linux_amd64.tar.gz
-    tar xvzf peco_linux_amd64.tar.gz
+    tar xzf peco_linux_amd64.tar.gz
     cd $dir/bin
     rm -f peco
     ln -s ../$peco_version/peco_linux_amd64/peco
@@ -97,52 +133,14 @@ labo_setup_git(){
 }
 labo_setup_vim(){
   local dir
-  local repo
-  local file
 
-  dir=$root/.config/nvim/repos/github.com/Shougo
-  mkdir -p $dir
+  dir=.config/nvim/repos/github.com/Shougo
 
-  local -a repos=(
-    git://github.com/Shougo/dein.vim
-  )
-  for repo in ${repos[@]}; do
-    labo_setup_git_sync
-  done
-}
-labo_setup_shared(){
-  if [ -d $root/.shared ]; then
-    cd $root
-    local path
-    local -a paths=(
-      .aws
-      .config
-      .docker
-      .docker_build
-      .gem
-      .gsutil
-      .git-post
-      .kube
-      .local
-      .ssh
-      .terminfo
-      .zsh
-    )
-    for path in ${paths[@]}; do
-      if [ ! -L $path ]; then
-        if [ -e $path ]; then
-          if [ -d $.shared/$path ]; then
-            mv $path/* .shared/$path/*
-          else
-            mv $path .shared/$path
-          fi
-        else
-          mkdir -p .shared/$path
-        fi
-        echo "ln -s .shared/$path"
-        ln -s .shared/$path
-      fi
-    done
+  cd $root
+  if [ -d .config ]; then
+    mkdir -p $dir
+    cd $dir
+    ln -s $plugin_root/dein.vim
   fi
 }
 
