@@ -14,7 +14,7 @@ docker build -t getto/labo.shun:0.0.1 .
 
 ```
 docker volume create --name shared
-docker run --name getto-labo-shun -v shared:/home/shun/.shared getto/labo.shun:0.0.1
+docker run -d --name getto-labo-shun -p $PORT:22 -v shared:/home/shun/.shared getto/labo.shun:0.0.1
 ```
 
 
