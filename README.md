@@ -3,13 +3,6 @@
 laboratory docker image for developper
 
 
-## build image
-
-```
-docker build -t getto/labo.shun .
-```
-
-
 ## run container
 
 ```
@@ -35,6 +28,14 @@ $ sudo chown shun:shun .shared
 ```
 git clone https://github.com/shun-fix9/configfiles.git .shared/.config
 ```
+
+
+## build image
+
+```
+docker build -t getto/labo.shun .
+```
+
 
 ## user-data.yml
 
