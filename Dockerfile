@@ -25,6 +25,7 @@ RUN : \
  && usermod -aG sudo -s /bin/zsh shun \
  && echo '%sudo	ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-nopasswd \
  && mkdir -p /home/shun/.ssh \
+ && mkdir -p /home/shun/bin \
  && touch /home/shun/.ssh/authorized_keys \
  && chown shun:shun -R /home/shun \
  && chmod 700 /home/shun/.ssh \
@@ -60,11 +61,11 @@ RUN : \
  && apt-get install neovim \
  && :
 
-COPY bin /home/shun/bin
+COPY labo-setup /home/shun/bin
 
 USER shun
 WORKDIR /home/shun
-RUN HOME=/home/shun /home/shun/bin/development-environment-setup
+RUN HOME=/home/shun /home/shun/bin/labo-setup
 
 
 COPY docker-entrypoint.sh /usr/local/bin

@@ -9,6 +9,7 @@ labo_setup_main(){
 
   labo_setup_shared
   labo_setup_plugins
+  labo_setup_git
   labo_setup_vim
   labo_setup_direnv
   labo_setup_peco
@@ -81,8 +82,13 @@ labo_setup_peco(){
 }
 labo_setup_zsh(){
   cd $root
-  TERM=xterm curl -sSL zplug.sh/installer | zsh
-  ln -s .config/zsh/zshrc .zshrc
+  if [ ! -d .zplug ]; then
+    TERM=xterm curl -sSL zplug.sh/installer | zsh
+  fi
+  ln -sf .config/zsh/zshrc .zshrc
+}
+labo_setup_git(){
+  ln -sf .config/git/config .gitconfig
 }
 labo_setup_vim(){
   local dir
@@ -118,10 +124,15 @@ labo_setup_shared(){
       .zsh
     )
     for path in ${paths[@]}; do
-      echo "ln -s .shared/$path"
-      mkdir -p .shared/$path
-      rm -rf $path
-      ln -s .shared/$path
+      if [ ! -L $path ]; then
+        if [ -e $path ]; then
+          mv $path .shared/$path
+        else
+          mkdir -p .shared/$path
+        fi
+        echo "ln -s .shared/$path"
+        ln -s .shared/$path
+      fi
     done
   fi
 }
