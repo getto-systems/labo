@@ -133,14 +133,29 @@ labo_setup_git(){
 }
 labo_setup_vim(){
   local dir
+  local repo
+  local repo_root
+  local url
+  local user
+  local host
 
-  dir=.config/nvim/repos/github.com/Shougo
-
-  cd $root
   if [ -d .config ]; then
-    mkdir -p $dir
-    cd $dir
-    ln -s $plugin_root/dein.vim
+    repo_root=.config/nvim/repos
+
+    local -a repos=(
+      git://github.com/Shougo/dein.vim
+    )
+    for repo in ${repos[@]}; do
+      url=$(dirname $repo)
+      user=$(basename $url)
+      url=$(dirname $url)
+      host=$(basename $url)
+
+      dir=$repo_root/$host/$user
+      mkdir -p $dir
+
+      labo_setup_git_sync
+    done
   fi
 }
 
