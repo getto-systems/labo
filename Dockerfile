@@ -41,6 +41,14 @@ RUN : \
  && chmod 600 /home/shun/.ssh/authorized_keys \
  && :
 
+# install add-apt-repository
+RUN : \
+ && set -x \
+ && apt-get install -y \
+      software-properties-common \
+ && apt-get clean \
+ && :
+
 # docker
 RUN : \
  && set -x \
@@ -58,12 +66,10 @@ RUN : \
 # install nvim
 RUN : \
  && set -x \
- && apt-get install -y \
-      software-properties-common \
- && apt-get clean \
  && add-apt-repository ppa:neovim-ppa/unstable \
  && apt-get update \
  && apt-get install neovim \
+ && apt-get clean \
  && :
 
 COPY docker-entrypoint.sh /usr/local/bin
