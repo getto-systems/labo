@@ -119,8 +119,8 @@ labo_setup_peco(){
 }
 labo_setup_tmux(){
   cd $root
-  if [ ! -L .tmux.config ]; then
-    ln -s .config/tmux/config .tmux.config
+  if [ ! -L .tmux.conf ]; then
+    ln -s .config/tmux/config .tmux.conf
   fi
 }
 labo_setup_zsh(){
