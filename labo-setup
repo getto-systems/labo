@@ -44,7 +44,7 @@ labo_setup_direnv(){
   local dir
   local direnv_version
 
-  direnv_version=2.9.0
+  direnv_version=2.11.3
   echo install direnv v$direnv_version
 
   dir=$plugin_root/direnv
@@ -64,7 +64,7 @@ labo_setup_peco(){
   local dir
   local peco_version
 
-  peco_version=0.4.2
+  peco_version=0.5.1
   echo install peco v$peco_version
 
   dir=$plugin_root/peco
