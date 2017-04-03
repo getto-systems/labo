@@ -9,7 +9,7 @@ laboratory docker image for developper
 docker run -d --name getto-labo -h getto-labo -p $PORT:22 -v shared:/home/shun/.shared getto/labo.shun
 ```
 
-* [docker hub](https://hub.docker.com/r/getto/labo.shun/)
+* Docker Hub : [getto/labo.shun](https://hub.docker.com/r/getto/labo.shun/)
 
 ### init container
 
