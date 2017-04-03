@@ -13,6 +13,7 @@ labo_setup_main(){
   labo_setup_vim
   labo_setup_direnv
   labo_setup_peco
+  labo_setup_tmux
   labo_setup_zsh
 }
 
@@ -114,6 +115,12 @@ labo_setup_peco(){
     cd $dir/bin
     rm -f peco
     ln -s ../$peco_version/peco_linux_amd64/peco
+  fi
+}
+labo_setup_tmux(){
+  cd $root
+  if [ ! -L .tmux.config ]; then
+    ln -s .config/tmux/config .tmux.config
   fi
 }
 labo_setup_zsh(){
