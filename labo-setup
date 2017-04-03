@@ -22,6 +22,7 @@ labo_setup_shared(){
     local path
     local -a paths=(
       .aws
+      .birdfirm
       .config
       .docker
       .docker_build
