@@ -1,6 +1,25 @@
-FROM ubuntu:16.04
+FROM ubuntu:16.10
 MAINTAINER shun
 
+EXPOSE 22
+
+ENV LSB_RELEASE yakkety
+ENV LANG ja_JP.UTF-8
+
+# setup home
+RUN : \
+ && useradd shun \
+ && usermod -aG sudo -s /bin/zsh shun \
+ && echo '%sudo	ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-nopasswd \
+ && mkdir -p /home/shun/.ssh \
+ && mkdir -p /home/shun/bin \
+ && touch /home/shun/.ssh/authorized_keys \
+ && chown shun:shun -R /home/shun \
+ && chmod 700 /home/shun/.ssh \
+ && chmod 600 /home/shun/.ssh/authorized_keys \
+ && :
+
+# basic packages
 RUN : \
  && set -x \
  && apt-get update \
@@ -19,38 +38,24 @@ RUN : \
  && apt-get clean \
  && :
 
+# setup localtime
+RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
-RUN : \
- && useradd shun \
- && usermod -aG sudo -s /bin/zsh shun \
- && echo '%sudo	ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-nopasswd \
- && mkdir -p /home/shun/.ssh \
- && mkdir -p /home/shun/bin \
- && touch /home/shun/.ssh/authorized_keys \
- && chown shun:shun -R /home/shun \
- && chmod 700 /home/shun/.ssh \
- && chmod 600 /home/shun/.ssh/authorized_keys \
- && :
-
-
+# docker
 RUN : \
  && set -x \
  && apt-get install -y \
       apt-transport-https \
       ca-certificates \
- && apt-get clean \
- && :
-
-RUN : \
- && apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D \
- && echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" > /etc/apt/sources.list.d/docker.list \
+ && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+ && sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $LSB_RELEASE stable"
  && apt-get update \
  && apt-get install -y \
-      docker-engine \
+      docker-ce \
  && apt-get clean \
  && :
 
-
+# install nvim
 RUN : \
  && set -x \
  && apt-get install -y \
@@ -61,19 +66,13 @@ RUN : \
  && apt-get install neovim \
  && :
 
+COPY docker-entrypoint.sh /usr/local/bin
 COPY labo-setup /home/shun/bin
 
 USER shun
-WORKDIR /home/shun
-RUN HOME=/home/shun /home/shun/bin/labo-setup
-
-
-COPY docker-entrypoint.sh /usr/local/bin
+RUN /home/shun/bin/labo-setup
 
 USER root
-RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-ENV LANG ja_JP.UTF-8
-EXPOSE 22
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["/usr/sbin/sshd","-D"]
