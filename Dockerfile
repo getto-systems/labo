@@ -33,12 +33,8 @@ RUN : \
  && useradd shun \
  && usermod -aG sudo -s /bin/zsh shun \
  && echo '%sudo	ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-nopasswd \
- && mkdir -p /home/shun/.ssh \
  && mkdir -p /home/shun/bin \
- && touch /home/shun/.ssh/authorized_keys \
  && chown shun:shun -R /home/shun \
- && chmod 700 /home/shun/.ssh \
- && chmod 600 /home/shun/.ssh/authorized_keys \
  && :
 
 # install add-apt-repository
