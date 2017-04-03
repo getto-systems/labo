@@ -1,35 +1,25 @@
 #!/bin/bash
 
-development_environment_setup_main(){
+labo_setup_main(){
   local root
-  local root_confirm
+  local plugin_root
 
-  root=$HOME
-  if [ "$root" != "$(pwd)" ]; then
-    echo home: $HOME
-    read -p "OK? [Y/n] " root_confirm
-    case "$root_confirm" in
-      Y*|y*)
-      ;;
-      *)
-        exit
-      ;;
-    esac
-  fi
+  root=/home/shun
+  plugin_root=$root/plugins
 
-  development_environment_setup_shared
-  development_environment_setup_plugins
-  development_environment_setup_vim
-  development_environment_setup_direnv
-  development_environment_setup_peco
-  development_environment_setup_zsh
+  labo_setup_shared
+  labo_setup_plugins
+  labo_setup_vim
+  labo_setup_direnv
+  labo_setup_peco
+  labo_setup_zsh
 }
 
-development_environment_setup_plugins(){
+labo_setup_plugins(){
   local dir
   local repo
 
-  dir=$root/plugins
+  dir=$plugin_root
   mkdir -p $dir
 
   local -a repos=(
@@ -46,49 +36,55 @@ development_environment_setup_plugins(){
     git://github.com/sanzen-sekai/git-branch-and-post
   )
   for repo in ${repos[@]}; do
-    development_environment_setup_git_sync
+    labo_setup_git_sync
   done
 }
-development_environment_setup_direnv(){
+labo_setup_direnv(){
+  local dir
   local direnv_version
+
   direnv_version=2.9.0
   echo install direnv v$direnv_version
 
-  mkdir -p $dir/direnv/bin
+  dir=$plugin_root/direnv
+  mkdir -p $dir/bin
 
-  if [ ! -d $dir/direnv/$direnv_version ]; then
-    mkdir -p $dir/direnv/$direnv_version
-    cd $dir/direnv/$direnv_version
+  if [ ! -d $dir/$direnv_version ]; then
+    mkdir -p $dir/$direnv_version
+    cd $dir/$direnv_version
     curl -sSL https://github.com/direnv/direnv/releases/download/v$direnv_version/direnv.linux-amd64 > direnv
     chmod a+x direnv
-    cd $dir/direnv/bin
+    cd $dir/bin
     rm -f direnv
     ln -s ../$direnv_version/direnv
   fi
 }
-development_environment_setup_peco(){
+labo_setup_peco(){
+  local dir
   local peco_version
+
   peco_version=0.4.2
   echo install peco v$peco_version
 
-  mkdir -p $dir/peco/bin
+  dir=$plugin_root/peco
+  mkdir -p $dir/bin
 
-  if [ ! -d $dir/peco/$peco_version ]; then
-    mkdir -p $dir/peco/$peco_version
-    cd $dir/peco/$peco_version
+  if [ ! -d $dir/$peco_version ]; then
+    mkdir -p $dir/$peco_version
+    cd $dir/$peco_version
     curl -sSL https://github.com/peco/peco/releases/download/v$peco_version/peco_linux_amd64.tar.gz > peco_linux_amd64.tar.gz
     tar xvzf peco_linux_amd64.tar.gz
-    cd $dir/peco/bin
+    cd $dir/bin
     rm -f peco
     ln -s ../$peco_version/peco_linux_amd64/peco
   fi
 }
-development_environment_setup_zsh(){
+labo_setup_zsh(){
   cd $root
   TERM=xterm curl -sSL zplug.sh/installer | zsh
   ln -s .config/zsh/zshrc .zshrc
 }
-development_environment_setup_vim(){
+labo_setup_vim(){
   local dir
   local repo
   local file
@@ -100,10 +96,10 @@ development_environment_setup_vim(){
     git://github.com/Shougo/dein.vim
   )
   for repo in ${repos[@]}; do
-    development_environment_setup_git_sync
+    labo_setup_git_sync
   done
 }
-development_environment_setup_shared(){
+labo_setup_shared(){
   if [ -d $root/.shared ]; then
     cd $root
     local path
@@ -130,7 +126,7 @@ development_environment_setup_shared(){
   fi
 }
 
-development_environment_setup_git_sync(){
+labo_setup_git_sync(){
   local name
   if [ -n "$1" ]; then
     name=$1
@@ -160,4 +156,4 @@ development_environment_setup_git_sync(){
   fi
 }
 
-development_environment_setup_main
+labo_setup_main
