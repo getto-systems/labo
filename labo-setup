@@ -71,7 +71,6 @@ labo_setup_plugins(){
     git://github.com/sanzen-sekai/git-sub-status
     git://github.com/sanzen-sekai/git-post
     git://github.com/sanzen-sekai/git-branch-and-post
-    git://github.com/Shougo/dein.vim
   )
   for repo in ${repos[@]}; do
     labo_setup_git_sync
