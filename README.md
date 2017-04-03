@@ -3,20 +3,20 @@
 laboratory docker image for developper
 
 
-# build image
+## build image
 
 ```
 docker build -t getto/labo.shun .
 ```
 
 
-# run container
+## run container
 
 ```
 docker run -d --name getto-labo -h getto-labo -p $PORT:22 -v shared:/home/shun/.shared getto/labo.shun
 ```
 
-## setup shared
+### setup shared
 
 ```
 docker volume create --name shared
@@ -25,11 +25,11 @@ $ sudo chown shun:shun .shared
 ```
 
 
-# user-data.yml
+## user-data.yml
 
 * docker-tcp.socket : see https://coreos.com/os/docs/latest/customizing-docker.html
 * start docker.service
 
-## for google cloud
+### for google cloud
 
 metadata : key=user-data, value=`paste user-data.yml`
