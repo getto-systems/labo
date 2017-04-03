@@ -85,10 +85,15 @@ labo_setup_zsh(){
   if [ ! -d .zplug ]; then
     TERM=xterm curl -sSL zplug.sh/installer | zsh
   fi
-  ln -sf .config/zsh/zshrc .zshrc
+  if [ ! -L .zshrc ]; then
+    ln -s .config/zsh/zshrc .zshrc
+  fi
 }
 labo_setup_git(){
-  ln -sf .config/git/config .gitconfig
+  cd $root
+  if [ ! -L .gitconfig ]; then
+    ln -s .config/git/config .gitconfig
+  fi
 }
 labo_setup_vim(){
   local dir
