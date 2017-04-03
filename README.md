@@ -28,7 +28,7 @@ $ sudo chown shun:shun .shared
 ### setup shared/.config
 
 ```
-git clone https://github.com/shun-fix9/configfiles.git .shared/.config
+git clone https://github.com/shun-getto-systems/configfiles.git .shared/.config
 ```
 
 
