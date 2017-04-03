@@ -16,6 +16,12 @@ docker build -t getto/labo.shun .
 docker run -d --name getto-labo -h getto-labo -p $PORT:22 -v shared:/home/shun/.shared getto/labo.shun
 ```
 
+### init container
+
+```
+docker exec -u shun:shun getto-labo /home/shun/labo-setup
+```
+
 ### setup shared
 
 ```
