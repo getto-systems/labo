@@ -27,11 +27,16 @@ labo_setup_shared(){
       .config
       .docker
       .docker_build
+      .elm
+      .erlang.cookie
       .gem
       .gsutil
       .git-post
+      .hex
       .kube
       .local
+      .mix
+      .npm
       .ssh
       .terminfo
       .zsh
