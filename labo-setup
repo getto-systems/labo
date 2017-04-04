@@ -61,17 +61,15 @@ labo_setup_plugins(){
   mkdir -p $dir
 
   local -a repos=(
-    git://github.com/shun-fix9/mybashrc
-    git://github.com/shun-fix9/birdfirm
-    git://github.com/shun-fix9/tmux-wrapper
-    git://github.com/sanzen-sekai/mypassword
-    git://github.com/sanzen-sekai/version-functions
-    git://github.com/sanzen-sekai/dockerfile-build-functions
-    git://github.com/sanzen-sekai/git-readme
-    git://github.com/sanzen-sekai/git-pub
-    git://github.com/sanzen-sekai/git-sub-status
-    git://github.com/sanzen-sekai/git-post
-    git://github.com/sanzen-sekai/git-branch-and-post
+    https://github.com/shun-fix9/birdfirm
+    https://github.com/shun-fix9/tmux-wrapper
+    https://github.com/sanzen-sekai/mypassword
+    https://github.com/sanzen-sekai/git-readme
+    https://github.com/sanzen-sekai/git-pub
+    https://github.com/sanzen-sekai/git-sub-status
+    https://github.com/sanzen-sekai/git-post
+    https://github.com/sanzen-sekai/git-branch-and-post
+    https://github.com/getto-systems/docker-wrapper
   )
   for repo in ${repos[@]}; do
     labo_setup_git_sync
@@ -150,7 +148,7 @@ labo_setup_vim(){
     repo_root=.config/nvim/repos
 
     local -a repos=(
-      git://github.com/Shougo/dein.vim
+      https://github.com/Shougo/dein.vim
     )
     for repo in ${repos[@]}; do
       url=$(dirname $repo)
