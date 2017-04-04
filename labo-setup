@@ -15,6 +15,7 @@ labo_setup_main(){
   labo_setup_peco
   labo_setup_tmux
   labo_setup_zsh
+  labo_setup_erlang
 }
 
 labo_setup_shared(){
@@ -28,7 +29,6 @@ labo_setup_shared(){
       .docker
       .docker_build
       .elm
-      .erlang.cookie
       .gem
       .gsutil
       .git-post
@@ -139,6 +139,12 @@ labo_setup_git(){
   cd $root
   if [ ! -L .gitconfig ]; then
     ln -s .config/git/config .gitconfig
+  fi
+}
+labo_setup_erlang(){
+  cd $root
+  if [ ! -L .erlang.cookie ]; then
+    ln -s .shared/.erlang.cookie
   fi
 }
 labo_setup_vim(){
