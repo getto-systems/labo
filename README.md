@@ -39,7 +39,7 @@ docker build -t getto/labo.shun .
 ```
 
 
-## user-data.yml
+## cloud-config
 
 ```yml
 #cloud-config
