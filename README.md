@@ -41,8 +41,32 @@ docker build -t getto/labo.shun .
 
 ## user-data.yml
 
-* docker-tcp.socket : see https://coreos.com/os/docs/latest/customizing-docker.html
-* start docker.service
+```yml
+#cloud-config
+
+coreos:
+  units:
+    - name: docker-tcp.socket
+      command: start
+      enable: true
+      content: |
+        [Unit]
+        Description=Docker Socket for the API
+
+        [Socket]
+        ListenStream=2375
+        BindIPv6Only=both
+        Service=docker.service
+
+        [Install]
+        WantedBy=sockets.target
+    - name: docker.service
+      command: start
+users:
+  - name: "shun"
+    ssh-authorized-keys:
+      - "ssh-rsa ..."
+```
 
 ### for google cloud
 
