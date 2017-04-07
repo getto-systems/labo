@@ -18,7 +18,7 @@ docker pull getto/labo.shun
 docker run -d --name getto-labo -h getto-labo -p $PORT:22 -v shared:/home/shun/.shared getto/labo.shun
 ```
 
-* /env/docker-env : env variables
+* /env/docker-env : env variables named `DOCKER_${ENV}`
 
 ### volume : shared
 
