@@ -90,3 +90,10 @@ docker service create ¥
 ```
 docker service update --image getto/labo.shun:1.1.1 getto-labo
 ```
+
+
+## when trouble on docker.service
+
+* **backup /var/lib/docker/volumes**
+* `rm -rf /var/lib/docker`
+* reboot
