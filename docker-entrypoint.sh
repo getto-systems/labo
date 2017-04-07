@@ -6,4 +6,6 @@ fi
 
 env | grep "^DOCKER_" > /etc/docker-env
 
+sudo -u shun /home/shun/bin/labo-setup
+
 exec "$@"
