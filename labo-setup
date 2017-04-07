@@ -66,7 +66,6 @@ labo_setup_plugins(){
   mkdir -p $dir
 
   local -a repos=(
-    https://github.com/shun-fix9/birdfirm
     https://github.com/shun-fix9/tmux-wrapper
     https://github.com/sanzen-sekai/mypassword
     https://github.com/sanzen-sekai/git-readme
@@ -74,6 +73,7 @@ labo_setup_plugins(){
     https://github.com/sanzen-sekai/git-sub-status
     https://github.com/sanzen-sekai/git-post
     https://github.com/sanzen-sekai/git-branch-and-post
+    https://github.com/getto-systems/birdfirm
     https://github.com/getto-systems/docker-wrapper
   )
   for repo in ${repos[@]}; do
