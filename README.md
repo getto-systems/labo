@@ -62,10 +62,6 @@ coreos:
         WantedBy=sockets.target
     - name: docker.service
       command: start
-users:
-  - name: "shun"
-    ssh-authorized-keys:
-      - "ssh-rsa ..."
 ```
 
 ### for google cloud
