@@ -77,6 +77,7 @@ docker swarm init
 docker service create ¥
   --name getto-labo ¥
   -p $PORT:22 ¥
+  -e DOCKER_HOST=tcp://172.17.0.1:2375 ¥
   -e DOCKER_LOCAL_IP=$LOCAL_IP ¥
   --mount type=volume,source=shared,destination=/home/shun/.shared ¥
   getto/labo.shun
