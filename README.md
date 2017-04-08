@@ -18,7 +18,7 @@ docker pull getto/labo.$LABO_USER
 docker run -d --name getto-labo -h getto-labo -p $PORT:22 -v shared:/home/$LABO_USER/.shared getto/labo.$LABO_USER
 ```
 
-* /env/docker-env : env variables named `DOCKER_${ENV}`
+* /env/labo-env : container's env
 
 ### volume : shared
 
@@ -78,12 +78,12 @@ docker service create ¥
   --name getto-labo ¥
   -p $PORT:22 ¥
   -e DOCKER_HOST=tcp://172.17.0.1:2375 ¥
-  -e DOCKER_LOCAL_IP=$LOCAL_IP ¥
+  -e LABO_LOCAL_IP=$LOCAL_IP ¥
   --mount type=volume,source=shared,destination=/home/$LABO_USER/.shared ¥
   getto/labo.$LABO_USER
 ```
 
-* `DOCKER_${ENV}` : put in /etc/docker-env
+* environment variables put in /etc/labo-env
 
 
 ## update container image
@@ -98,3 +98,4 @@ docker service update --image getto/labo.$LABO_USER:<version> getto-labo
 * **backup /var/lib/docker/volumes**
 * `rm -rf /var/lib/docker`
 * reboot
+
