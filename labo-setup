@@ -1,17 +1,13 @@
 #!/bin/bash
 
 labo_setup_main(){
-  local root
-  root=$HOME
-
   labo_setup_shared
   labo_setup_config
 }
-
 labo_setup_shared(){
   local path
 
-  cd $root
+  cd $HOME
   if [ -d .shared ]; then
     for path in $(ls -a1 .shared); do
       case "$path" in
@@ -31,17 +27,12 @@ labo_setup_shared(){
     done
   fi
 }
-
 labo_setup_config(){
-  cd $root
-  labo_setup_config_link .config/tmux/config .tmux.conf
-  labo_setup_config_link .config/zsh/zshrc .zshrc
-  labo_setup_config_link .config/git/config .gitconfig
-}
-labo_setup_config_link(){
-  if [ ! -L $2 ]; then
-    echo "ln -s $1 $2"
-    ln -s $1 $2
+  local rc
+  rc=$HOME/.config/rc
+
+  if [ -x "$rc" ]; then
+    $rc
   fi
 }
 
