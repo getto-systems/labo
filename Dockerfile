@@ -21,6 +21,7 @@ RUN : \
       language-pack-ja-base \
       man \
       manpages-dev \
+      silversearcher-ag \
       ssh \
       sudo \
       tmux \
@@ -68,8 +69,11 @@ RUN : \
  && set -x \
  && add-apt-repository ppa:neovim-ppa/unstable \
  && apt-get update \
- && apt-get install neovim \
+ && apt-get install -y \
+      neovim \
+      python3-pip \
  && apt-get clean \
+ && pip3 install neovim \
  && :
 
 COPY docker-entrypoint.sh /usr/local/bin
