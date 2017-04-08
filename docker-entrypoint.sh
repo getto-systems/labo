@@ -8,6 +8,6 @@ fi
 
 env | grep "^DOCKER_" > /etc/docker-env
 
-sudo -u shun /home/shun/bin/labo-setup
+sudo -u $LABO_USER bash -c "HOME=/home/$LABO_USER /home/$LABO_USER/bin/labo-setup"
 
 exec "$@"

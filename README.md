@@ -6,7 +6,7 @@ laboratory docker image for developper
 ## pull
 
 ```
-docker pull getto/labo.shun
+docker pull getto/labo.$LABO_USER
 ```
 
 * Docker Hub : [getto/labo.shun](https://hub.docker.com/r/getto/labo.shun/)
@@ -15,7 +15,7 @@ docker pull getto/labo.shun
 ## run
 
 ```
-docker run -d --name getto-labo -h getto-labo -p $PORT:22 -v shared:/home/shun/.shared getto/labo.shun
+docker run -d --name getto-labo -h getto-labo -p $PORT:22 -v shared:/home/$LABO_USER/.shared getto/labo.$LABO_USER
 ```
 
 * /env/docker-env : env variables named `DOCKER_${ENV}`
@@ -34,7 +34,7 @@ git clone https://github.com/shun-getto-systems/configfiles.git .shared/.config
 ## build
 
 ```
-docker build -t getto/labo.shun .
+docker build -t getto/labo.$LABO_USER --build-arg LABO_USER=$LABO_USER .
 ```
 
 
@@ -79,8 +79,8 @@ docker service create ¥
   -p $PORT:22 ¥
   -e DOCKER_HOST=tcp://172.17.0.1:2375 ¥
   -e DOCKER_LOCAL_IP=$LOCAL_IP ¥
-  --mount type=volume,source=shared,destination=/home/shun/.shared ¥
-  getto/labo.shun
+  --mount type=volume,source=shared,destination=/home/$LABO_USER/.shared ¥
+  getto/labo.$LABO_USER
 ```
 
 * `DOCKER_${ENV}` : any env vars put in /etc/docker-env
@@ -89,7 +89,7 @@ docker service create ¥
 ## update container image
 
 ```
-docker service update --image getto/labo.shun:1.1.1 getto-labo
+docker service update --image getto/labo.$LABO_USER:<version> getto-labo
 ```
 
 
