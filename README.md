@@ -83,7 +83,7 @@ docker service create ¥
   getto/labo.$LABO_USER
 ```
 
-* `DOCKER_${ENV}` : any env vars put in /etc/docker-env
+* `DOCKER_${ENV}` : put in /etc/docker-env
 
 
 ## update container image
