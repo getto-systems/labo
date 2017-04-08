@@ -1,4 +1,4 @@
-# labo
+# labo.shun
 
 laboratory docker image for developper
 
