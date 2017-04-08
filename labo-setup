@@ -2,206 +2,46 @@
 
 labo_setup_main(){
   local root
-  local plugin_root
-
-  root=/home/shun
-  plugin_root=$root/.plugins
+  root=$HOME
 
   labo_setup_shared
-  labo_setup_plugins
-  labo_setup_git
-  labo_setup_vim
-  labo_setup_direnv
-  labo_setup_peco
-  labo_setup_tmux
-  labo_setup_zsh
-  labo_setup_erlang
+  labo_setup_config
 }
 
 labo_setup_shared(){
-  if [ -d $root/.shared ]; then
-    cd $root
-    local path
-    local -a paths=(
-      .aws
-      .birdfirm
-      .config
-      .docker
-      .docker_build
-      .elm
-      .gem
-      .gsutil
-      .git-post
-      .hex
-      .kube
-      .local
-      .mix
-      .npm
-      .ssh
-      .terminfo
-      .zsh
-    )
-    for path in ${paths[@]}; do
-      if [ ! -L $path ]; then
-        if [ -e $path ]; then
-          if [ -d $.shared/$path ]; then
-            mv $path/* .shared/$path/*
-          else
-            mv $path .shared/$path
+  local path
+
+  cd $root
+  if [ -d .shared ]; then
+    for path in $(ls -a1 .shared); do
+      case "$path" in
+        .|..)
+          ;;
+        *)
+          if [ ! -L $path ]; then
+            if [ -e $path ]; then
+              echo "$path exists. not linked"
+            else
+              echo "ln -s .shared/$path"
+              ln -s .shared/$path
+            fi
           fi
-        else
-          mkdir -p .shared/$path
-        fi
-        echo "ln -s .shared/$path"
-        ln -s .shared/$path
-      fi
-    done
-  fi
-}
-labo_setup_plugins(){
-  local dir
-  local repo
-
-  dir=$plugin_root
-  mkdir -p $dir
-
-  local -a repos=(
-    https://github.com/shun-fix9/tmux-wrapper
-    https://github.com/sanzen-sekai/mypassword
-    https://github.com/sanzen-sekai/git-readme
-    https://github.com/sanzen-sekai/git-pub
-    https://github.com/sanzen-sekai/git-sub-status
-    https://github.com/sanzen-sekai/git-post
-    https://github.com/sanzen-sekai/git-branch-and-post
-    https://github.com/getto-systems/birdfirm
-    https://github.com/getto-systems/docker-wrapper
-  )
-  for repo in ${repos[@]}; do
-    labo_setup_git_sync
-  done
-}
-labo_setup_direnv(){
-  local dir
-  local direnv_version
-
-  direnv_version=2.11.3
-  echo install direnv v$direnv_version
-
-  dir=$plugin_root/direnv
-  mkdir -p $dir/bin
-
-  if [ ! -d $dir/$direnv_version ]; then
-    mkdir -p $dir/$direnv_version
-    cd $dir/$direnv_version
-    curl -sSL https://github.com/direnv/direnv/releases/download/v$direnv_version/direnv.linux-amd64 > direnv
-    chmod a+x direnv
-    cd $dir/bin
-    rm -f direnv
-    ln -s ../$direnv_version/direnv
-  fi
-}
-labo_setup_peco(){
-  local dir
-  local peco_version
-
-  peco_version=0.5.1
-  echo install peco v$peco_version
-
-  dir=$plugin_root/peco
-  mkdir -p $dir/bin
-
-  if [ ! -d $dir/$peco_version ]; then
-    mkdir -p $dir/$peco_version
-    cd $dir/$peco_version
-    curl -sSL https://github.com/peco/peco/releases/download/v$peco_version/peco_linux_amd64.tar.gz > peco_linux_amd64.tar.gz
-    tar xzf peco_linux_amd64.tar.gz
-    cd $dir/bin
-    rm -f peco
-    ln -s ../$peco_version/peco_linux_amd64/peco
-  fi
-}
-labo_setup_tmux(){
-  cd $root
-  if [ ! -L .tmux.conf ]; then
-    ln -s .config/tmux/config .tmux.conf
-  fi
-}
-labo_setup_zsh(){
-  cd $root
-  if [ ! -d .zplug ]; then
-    curl -sSL zplug.sh/installer | TERM=xterm zsh
-  fi
-  if [ ! -L .zshrc ]; then
-    ln -s .config/zsh/zshrc .zshrc
-  fi
-}
-labo_setup_git(){
-  cd $root
-  if [ ! -L .gitconfig ]; then
-    ln -s .config/git/config .gitconfig
-  fi
-}
-labo_setup_erlang(){
-  cd $root
-  if [ ! -L .erlang.cookie ]; then
-    ln -s .shared/.erlang.cookie
-  fi
-}
-labo_setup_vim(){
-  local dir
-  local repo
-  local repo_root
-  local url
-  local user
-  local host
-
-  if [ -d .config ]; then
-    repo_root=.config/nvim/repos
-
-    local -a repos=(
-      https://github.com/Shougo/dein.vim
-    )
-    for repo in ${repos[@]}; do
-      url=$(dirname $repo)
-      user=$(basename $url)
-      url=$(dirname $url)
-      host=$(basename $url)
-
-      dir=$repo_root/$host/$user
-      mkdir -p $dir
-
-      labo_setup_git_sync
+          ;;
+      esac
     done
   fi
 }
 
-labo_setup_git_sync(){
-  local name
-  if [ -n "$1" ]; then
-    name=$1
-  else
-    name=$(basename $repo)
-  fi
-
-  echo "$repo => $dir/$name"
-
-  cd $dir
-  if [ $name = "." ]; then
-    if [ -d .git ]; then
-      git pull
-    else
-      git clone $repo tmp_git_repo
-      mv tmp_git_repo/.git .
-      rm -rf tmp_git_repo
-      git checkout .
-    fi
-  else
-    if [ -d $name ]; then
-      cd $name
-      git pull
-    else
-      git clone $repo $name
-    fi
+labo_setup_config(){
+  cd $root
+  labo_setup_config_link .config/tmux/config .tmux.conf
+  labo_setup_config_link .config/zsh/zshrc .zshrc
+  labo_setup_config_link .config/git/config .gitconfig
+}
+labo_setup_config_link(){
+  if [ ! -L $2 ]; then
+    echo "ln -s $1 $2"
+    ln -s $1 $2
   fi
 }
 

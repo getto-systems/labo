@@ -1,6 +1,9 @@
 FROM ubuntu:16.10
 MAINTAINER shun
 
+ARG LABO_USER=shun
+ENV LABO_USER $LABO_USER
+
 EXPOSE 22
 
 ENV LSB_RELEASE yakkety
@@ -31,11 +34,11 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 # setup home
 RUN : \
- && useradd shun \
- && usermod -aG sudo -s /bin/zsh shun \
+ && useradd $LABO_USER \
+ && usermod -aG sudo -s /bin/zsh $LABO_USER \
  && echo '%sudo	ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-nopasswd \
- && mkdir -p /home/shun/bin \
- && chown shun:shun -R /home/shun \
+ && mkdir -p /home/$LABO_USER/bin \
+ && chown $LABO_USER:$LABO_USER -R /home/$LABO_USER \
  && :
 
 # install add-apt-repository
@@ -70,10 +73,10 @@ RUN : \
  && :
 
 COPY docker-entrypoint.sh /usr/local/bin
-COPY labo-setup /home/shun/bin
+COPY labo-setup /home/$LABO_USER/bin
 
-USER shun
-RUN /home/shun/bin/labo-setup
+USER $LABO_USER
+RUN /home/$LABO_USER/bin/labo-setup
 
 USER root
 
