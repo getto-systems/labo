@@ -15,19 +15,19 @@ docker pull getto/labo.$LABO_USER
 ## run
 
 ```
-docker run -d --name getto-labo -h getto-labo -p $PORT:22 -v shared:/home/$LABO_USER/.shared getto/labo.$LABO_USER
+docker run -d --name getto-labo -h getto-labo -p $PORT:22 -v dotfiles:/home/$LABO_USER/.dotfiles getto/labo.$LABO_USER
 ```
 
 * /env/labo-env : container's env
 
-### volume : shared
+### volume : dotfiles
 
 setup your dotfiles
 
 #### shared/.config
 
 ```
-git clone https://github.com/shun-getto-systems/configfiles.git .shared/.config
+git clone https://github.com/shun-getto-systems/configfiles.git .dotfiles/.config
 ```
 
 
@@ -37,6 +37,7 @@ git clone https://github.com/shun-getto-systems/configfiles.git .shared/.config
 docker build -t getto/labo.$LABO_USER --build-arg LABO_USER=$LABO_USER .
 ```
 
+* LABO_USER : default : shun
 
 # setup on CoreOS
 
@@ -67,7 +68,7 @@ coreos:
 
 ### for google cloud
 
-metadata : key=user-data, value=`paste user-data.yml`
+metadata : key=user-data, value=`paste user-data above`
 
 
 ## run base container as service
@@ -79,7 +80,7 @@ docker service create ¥
   -p $PORT:22 ¥
   -e DOCKER_HOST=tcp://172.17.0.1:2375 ¥
   -e LABO_LOCAL_IP=$LOCAL_IP ¥
-  --mount type=volume,source=shared,destination=/home/$LABO_USER/.shared ¥
+  --mount type=volume,source=dotfiles,destination=/home/$LABO_USER/.dotfiles ¥
   getto/labo.$LABO_USER
 ```
 
@@ -95,7 +96,8 @@ docker service update --image getto/labo.$LABO_USER:<version> getto-labo
 
 ## when trouble on docker.service
 
-* **backup /var/lib/docker/volumes**
-* `rm -rf /var/lib/docker`
-* reboot
-
+```bash
+$ sudo cp -a /var/lib/docker/volumes /path/to/backup/docker-volumes
+$ sudo rm -rf /var/lib/docker
+$ sudo reboot
+```
