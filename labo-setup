@@ -1,15 +1,15 @@
 #!/bin/bash
 
 labo_setup_main(){
-  labo_setup_shared
+  labo_setup_dotfiles
   labo_setup_config
 }
-labo_setup_shared(){
+labo_setup_dotfiles(){
   local path
 
   cd $HOME
-  if [ -d .shared ]; then
-    for path in $(ls -a1 .shared); do
+  if [ -d .dotfiles ]; then
+    for path in $(ls -a1 .dotfiles); do
       case "$path" in
         .|..)
           ;;
@@ -18,8 +18,8 @@ labo_setup_shared(){
             if [ -e $path ]; then
               echo "$path exists. not linked"
             else
-              echo "ln -s .shared/$path"
-              ln -s .shared/$path
+              echo "ln -s .dotfiles/$path"
+              ln -s .dotfiles/$path
             fi
           fi
           ;;
