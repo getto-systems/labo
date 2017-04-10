@@ -15,7 +15,12 @@ docker pull getto/labo.$LABO_USER
 ## run
 
 ```
-docker run -d --name getto-labo -h getto-labo -p $PORT:22 -v dotfiles:/home/$LABO_USER/.dotfiles getto/labo.$LABO_USER
+docker run -d ¥
+  --name getto-labo ¥
+  -h getto-labo ¥
+  -p $PORT:22 ¥
+  -v dotfiles:/home/$LABO_USER/.dotfiles ¥
+  getto/labo.$LABO_USER
 ```
 
 * /env/labo-env : container's env
