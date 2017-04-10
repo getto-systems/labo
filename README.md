@@ -29,8 +29,6 @@ docker run -d ¥
 
 setup your dotfiles
 
-#### shared/.config
-
 ```
 git clone https://github.com/shun-getto-systems/configfiles.git .dotfiles/.config
 ```
@@ -71,9 +69,7 @@ coreos:
       command: start
 ```
 
-### for google cloud
-
-metadata : key=user-data, value=`paste user-data above`
+* **google cloud** : metadata : key=user-data, value=`paste user-data above`
 
 
 ## run base container as service
