@@ -116,3 +116,6 @@ $ sudo reboot
 * delete instance
 * create new instance, and attach old disk
 * `sudo mount /dev/disk/by-id/google-getto-labo-part9 /mnt/data`
+* `sudo cp -a /mnt/data/var/lib/docker/volumes /var/lib/docker/volumes`
+* detach old disk
+* reboot
