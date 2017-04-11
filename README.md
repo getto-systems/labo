@@ -109,3 +109,10 @@ $ sudo cp -a /var/lib/docker/volumes /path/to/backup/docker-volumes
 $ sudo rm -rf /var/lib/docker
 $ sudo reboot
 ```
+
+## when boot failed : Readonly filesystem
+
+* uncheck 'delete boot disk when delete instance'
+* delete instance
+* create new instance, and attach old disk
+* `sudo mount /dev/disk/by-id/google-getto-labo-part9 /mnt/data`
