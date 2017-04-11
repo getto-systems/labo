@@ -8,6 +8,18 @@ fi
 
 env > /etc/labo-env
 
-sudo -u $LABO_USER bash -c "HOME=/home/$LABO_USER /home/$LABO_USER/bin/labo-setup"
+if [ -n "$LABO_USER" ]; then
+  useradd $LABO_USER
+  usermod -aG sudo -s /bin/zsh $LABO_USER
+  echo '%sudo	ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-nopasswd
+  labo_home=/home/$LABO_USER
+  mkdir -p $labo_home
+  chown $LABO_USER:$LABO_USER -R $labo_home
+  sudo -u $LABO_USER /usr/local/bin/labo-setup
+fi
+
+if [ -n "$LABO_TIMEZONE" ]; then
+  ln -sf /usr/share/zoneinfo/$LABO_TIMEZONE /etc/localtime
+fi
 
 exec "$@"

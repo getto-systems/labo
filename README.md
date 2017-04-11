@@ -1,4 +1,4 @@
-# labo.shun
+# labo
 
 laboratory docker image for developper
 
@@ -6,10 +6,10 @@ laboratory docker image for developper
 ## pull
 
 ```
-docker pull getto/labo.$LABO_USER
+docker pull getto/labo
 ```
 
-* Docker Hub : [getto/labo.shun](https://hub.docker.com/r/getto/labo.shun/)
+* Docker Hub : [getto/labo](https://hub.docker.com/r/getto/labo/)
 
 
 ## run
@@ -19,11 +19,16 @@ docker run -d ¥
   --name getto-labo ¥
   -h getto-labo ¥
   -p $PORT:22 ¥
+  -e LABO_USER=$LABO_USER
+  -e LABO_TIMEZONE=$TIMEZONE
   -v dotfiles:/home/$LABO_USER/.dotfiles ¥
-  getto/labo.$LABO_USER
+  getto/labo
 ```
 
-* /env/labo-env : container's env
+* `LABO_USER` : your working username
+* `LABO_TIMEZONE` : Asia/Tokyo, etc.
+
+all container's env put in /env/labo-env
 
 ### volume : dotfiles
 
@@ -33,14 +38,14 @@ setup your dotfiles
 git clone https://github.com/shun-getto-systems/configfiles.git .dotfiles/.config
 ```
 
+* all `.dotfiles/*` file and directories `ln -s` to $HOME
+
 
 ## build
 
 ```
-docker build -t getto/labo.$LABO_USER --build-arg LABO_USER=$LABO_USER .
+docker build -t getto/labo .
 ```
-
-* LABO_USER : default : shun
 
 # setup on CoreOS
 
@@ -81,8 +86,10 @@ docker service create ¥
   -p $PORT:22 ¥
   -e DOCKER_HOST=tcp://172.17.0.1:2375 ¥
   -e LABO_LOCAL_IP=$LOCAL_IP ¥
+  -e LABO_USER=$LABO_USER
+  -e LABO_TIMEZONE=$TIMEZONE
   --mount type=volume,source=dotfiles,destination=/home/$LABO_USER/.dotfiles ¥
-  getto/labo.$LABO_USER
+  getto/labo
 ```
 
 * environment variables put in /etc/labo-env
@@ -91,7 +98,7 @@ docker service create ¥
 ## update container image
 
 ```
-docker service update --image getto/labo.$LABO_USER:<version> getto-labo
+docker service update --image getto/labo:<version> getto-labo
 ```
 
 
