@@ -5,9 +5,12 @@ labo_setup_main(){
   labo_setup_config
 }
 labo_setup_dotfiles(){
+  local root
   local path
 
-  cd $HOME
+  root=/home/$LABO_USER
+
+  cd $root
   if [ -d .dotfiles ]; then
     for path in $(ls -a1 .dotfiles); do
       case "$path" in
@@ -29,7 +32,7 @@ labo_setup_dotfiles(){
 }
 labo_setup_config(){
   local rc
-  rc=$HOME/.config/rc
+  rc=$root/.config/rc
 
   if [ -x "$rc" ]; then
     $rc

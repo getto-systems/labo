@@ -1,13 +1,9 @@
 FROM ubuntu:16.10
 MAINTAINER shun
 
-ARG LABO_USER=shun
-ENV LABO_USER $LABO_USER
-
 EXPOSE 22
 
 ENV LSB_RELEASE yakkety
-ENV LANG ja_JP.UTF-8
 
 # basic packages
 RUN : \
@@ -22,31 +18,12 @@ RUN : \
       man \
       manpages-dev \
       silversearcher-ag \
+      software-properties-common \
       ssh \
       sudo \
       tmux \
       unzip \
       zsh \
- && apt-get clean \
- && :
-
-# setup localtime
-RUN ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-
-# setup home
-RUN : \
- && useradd $LABO_USER \
- && usermod -aG sudo -s /bin/zsh $LABO_USER \
- && echo '%sudo	ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-nopasswd \
- && mkdir -p /home/$LABO_USER/bin \
- && chown $LABO_USER:$LABO_USER -R /home/$LABO_USER \
- && :
-
-# install add-apt-repository
-RUN : \
- && set -x \
- && apt-get install -y \
-      software-properties-common \
  && apt-get clean \
  && :
 
@@ -76,13 +53,8 @@ RUN : \
  && pip3 install neovim \
  && :
 
-COPY docker-entrypoint.sh /usr/local/bin
-COPY labo-setup /home/$LABO_USER/bin
-
-USER $LABO_USER
-RUN /home/$LABO_USER/bin/labo-setup
-
-USER root
+# entrypoint, setup script
+COPY docker-entrypoint.sh labo-setup /usr/local/bin/
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["/usr/sbin/sshd","-D"]
