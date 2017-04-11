@@ -12,10 +12,11 @@ if [ -n "$LABO_USER" ]; then
   useradd $LABO_USER
   usermod -aG sudo -s /bin/zsh $LABO_USER
   echo '%sudo	ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-nopasswd
+
   labo_home=/home/$LABO_USER
   mkdir -p $labo_home
   chown $LABO_USER:$LABO_USER -R $labo_home
-  sudo -u $LABO_USER /usr/local/bin/labo-setup
+  sudo -u $LABO_USER bash -c "HOME=$labo_home labo-setup"
 fi
 
 if [ -n "$LABO_TIMEZONE" ]; then
