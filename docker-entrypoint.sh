@@ -3,7 +3,8 @@
 if [ "$1" = "/usr/sbin/sshd" ]; then
   mkdir -p /var/run/sshd
   rm -rf /etc/ssh/ssh_host_*
-  dpkg-reconfigure openssh-server
+  ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
+  ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa
 fi
 
 env > /etc/labo-env
@@ -11,7 +12,7 @@ env > /etc/labo-env
 if [ -n "$LABO_USER" ]; then
   useradd $LABO_USER
   usermod -aG sudo -s /bin/zsh $LABO_USER
-  echo '%sudo	ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-nopasswd
+  echo "$LABO_USER:$LABO_USER" | chpasswd
 
   labo_home=/home/$LABO_USER
   mkdir -p $labo_home
